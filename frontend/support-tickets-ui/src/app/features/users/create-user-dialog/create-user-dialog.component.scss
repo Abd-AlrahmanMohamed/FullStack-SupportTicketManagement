@@ -1,0 +1,30 @@
+.dialog-description {
+  margin: 0 0 var(--space-4);
+  color: var(--text-secondary);
+  font-size: 13.5px;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 340px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-error {
+  color: var(--danger-text);
+  background: var(--danger-bg);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .dialog-form {
+    min-width: 0;
+  }
+}

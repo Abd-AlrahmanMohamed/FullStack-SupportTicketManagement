@@ -1,0 +1,22 @@
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-8);
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 5;
+  padding: 0;
+}
+
+.loading-message {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}

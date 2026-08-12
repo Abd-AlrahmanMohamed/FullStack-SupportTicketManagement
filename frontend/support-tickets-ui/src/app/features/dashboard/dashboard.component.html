@@ -1,0 +1,72 @@
+@if (loading()) {
+  <app-loading-state message="Loading dashboard…" />
+} @else if (dashboard()) {
+  <div class="page">
+    <app-page-header
+      title="Dashboard"
+      description="Overview of your support operation."
+    />
+
+    <div class="kpi-grid">
+      @for (card of kpiCards(); track card.label) {
+        <mat-card class="kpi-card">
+          <div class="kpi-icon" [class.kpi-icon-danger]="card.accent === 'danger'">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <div class="kpi-body">
+            <span class="kpi-value">{{ card.value }}</span>
+            <span class="kpi-label">{{ card.label }}</span>
+          </div>
+        </mat-card>
+      }
+    </div>
+
+    <div class="charts-grid">
+      <mat-card class="chart-card">
+        <div class="card-header">
+          <h2 class="card-title">Tickets by Status</h2>
+        </div>
+        <div class="chart-content">
+          <canvas
+            baseChart
+            [data]="statusChartData"
+            [options]="statusChartOptions"
+            type="doughnut"
+          >
+          </canvas>
+        </div>
+      </mat-card>
+
+      <mat-card class="workload-card">
+        <div class="card-header">
+          <h2 class="card-title">Agent Workload</h2>
+          <span class="card-subtitle">Active tickets per agent</span>
+        </div>
+
+        @if (dashboard()!.agentWorkload.length === 0) {
+          <p class="empty-inline">No active tickets assigned right now.</p>
+        } @else {
+          <div class="workload-list">
+            @for (agent of dashboard()!.agentWorkload; track agent.agentName) {
+              <div class="workload-row">
+                <app-avatar [name]="agent.agentName" size="sm" />
+                <div class="workload-info">
+                  <div class="workload-top">
+                    <span class="workload-name">{{ agent.agentName }}</span>
+                    <span class="workload-count">{{ agent.activeTickets }}</span>
+                  </div>
+                  <div class="workload-track">
+                    <div
+                      class="workload-fill"
+                      [style.width.%]="(agent.activeTickets / maxAgentTickets()) * 100"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </mat-card>
+    </div>
+  </div>
+}

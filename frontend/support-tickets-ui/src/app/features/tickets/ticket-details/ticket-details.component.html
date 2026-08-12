@@ -1,0 +1,274 @@
+@if (loading()) {
+  <app-loading-state message="Loading ticket…" />
+} @else if (notFound()) {
+  <app-empty-state
+    icon="search_off"
+    title="Ticket not found"
+    message="This ticket does not exist, or you do not have access to it."
+  >
+    <button mat-flat-button color="primary" (click)="goBack()">Back to Tickets</button>
+  </app-empty-state>
+} @else if (ticket()) {
+  @if (ticket(); as t) {
+  <div class="details-page">
+    <button mat-button class="back-link" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Tickets
+    </button>
+
+    <div class="ticket-header">
+      <div class="ticket-header-top">
+        <span class="ticket-number">{{ t.ticketNumber }}</span>
+        <app-status-badge [status]="t.status" />
+      </div>
+      <h1 class="ticket-title">{{ t.title }}</h1>
+      <p class="ticket-description">{{ t.description }}</p>
+    </div>
+
+    <div class="workspace">
+      <div class="main-column">
+        <mat-card class="section-card">
+          <div class="section-header">
+            <h2>Comments</h2>
+            <span class="section-count">{{ t.comments.length }}</span>
+          </div>
+
+          <div class="comment-list">
+            @for (comment of t.comments; track comment.id) {
+              <div class="comment">
+                <app-avatar [name]="comment.userName" size="sm" />
+                <div class="comment-body">
+                  <div class="comment-meta">
+                    <span class="comment-name">{{ comment.userName }}</span>
+                    <span class="comment-role-tag">{{ comment.userRole }}</span>
+                    <span class="comment-time">{{ comment.createdAt | timeAgo }}</span>
+                  </div>
+                  <p class="comment-message">{{ comment.message }}</p>
+                </div>
+              </div>
+            } @empty {
+              <app-empty-state
+                icon="chat_bubble_outline"
+                title="No comments yet"
+                message="Updates and replies will show up here."
+              />
+            }
+          </div>
+
+          <mat-divider class="comment-divider"></mat-divider>
+
+          <form [formGroup]="commentForm" (ngSubmit)="addComment()" class="comment-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Add a comment</mat-label>
+              <textarea
+                matInput
+                formControlName="message"
+                rows="3"
+                placeholder="Share an update…"
+              ></textarea>
+            </mat-form-field>
+            <div class="comment-form-actions">
+              <button mat-flat-button color="primary" type="submit">
+                <mat-icon>send</mat-icon>
+                Post Comment
+              </button>
+            </div>
+          </form>
+        </mat-card>
+
+        <mat-card class="section-card">
+          <div class="section-header">
+            <h2>Activity</h2>
+          </div>
+
+          @if (t.timeline.length === 0) {
+            <app-empty-state icon="history" title="No activity yet" />
+          } @else {
+            <div class="timeline">
+              @for (activity of t.timeline; track activity.id; let last = $last) {
+                <div class="timeline-item">
+                  <div class="timeline-marker">
+                    <mat-icon>{{ activityIcon(activity.action) }}</mat-icon>
+                    @if (!last) {
+                      <span class="timeline-line"></span>
+                    }
+                  </div>
+                  <div class="timeline-content">
+                    <p class="timeline-label">
+                      {{ activityLabel(activity.action) }}
+                      @if (activity.oldValue || activity.newValue) {
+                        <span class="timeline-change">
+                          {{ activity.oldValue || '—' }} → {{ activity.newValue || '—' }}
+                        </span>
+                      }
+                    </p>
+                    <span class="timeline-meta">{{ activity.userName }} · {{ activity.createdAt | timeAgo }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </mat-card>
+
+        @if (!isCustomer && t.timeEntries.length > 0) {
+          <mat-card class="section-card">
+            <div class="section-header">
+              <h2>Time Entries</h2>
+            </div>
+
+            <table mat-table [dataSource]="t.timeEntries" class="time-entries-table">
+              <ng-container matColumnDef="workDate">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let entry">{{ entry.workDate | date: 'MMM d, y' }}</td>
+              </ng-container>
+              <ng-container matColumnDef="durationMinutes">
+                <th mat-header-cell *matHeaderCellDef>Duration</th>
+                <td mat-cell *matCellDef="let entry">{{ entry.durationMinutes | durationMinutes }}</td>
+              </ng-container>
+              <ng-container matColumnDef="agentName">
+                <th mat-header-cell *matHeaderCellDef>Agent</th>
+                <td mat-cell *matCellDef="let entry">{{ entry.agentName }}</td>
+              </ng-container>
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Notes</th>
+                <td mat-cell *matCellDef="let entry" class="text-muted">{{ entry.description }}</td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="timeEntryColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: timeEntryColumns"></tr>
+            </table>
+          </mat-card>
+        }
+      </div>
+
+      <div class="side-column">
+        <mat-card class="section-card">
+          <div class="section-header">
+            <h2>Details</h2>
+          </div>
+
+          <dl class="detail-list">
+            <div class="detail-row">
+              <dt>Priority</dt>
+              <dd><app-priority-badge [priority]="t.priority" /></dd>
+            </div>
+            <div class="detail-row">
+              <dt>Assigned Agent</dt>
+              <dd>{{ t.assignedAgentName || 'Unassigned' }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>Customer</dt>
+              <dd>{{ t.customerName }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>Created</dt>
+              <dd>{{ t.createdAt | date: 'MMM d, y' }}</dd>
+            </div>
+            <div class="detail-row">
+              <dt>Total Time</dt>
+              <dd>{{ t.totalTimeMinutes | durationMinutes }}</dd>
+            </div>
+          </dl>
+        </mat-card>
+
+        @if (hasActions) {
+          <mat-card class="section-card">
+            <div class="section-header">
+              <h2>Actions</h2>
+            </div>
+
+            <div class="actions-list">
+              @if (isAdmin) {
+                <div class="action-block">
+                  <span class="action-label">Assign Agent</span>
+                  <div class="action-row">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-select
+                        [value]="selectedAgentId()"
+                        (selectionChange)="selectedAgentId.set($event.value)"
+                        placeholder="Choose an agent"
+                      >
+                        @for (agent of agents(); track agent.id) {
+                          <mat-option [value]="agent.id">{{ agent.fullName }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-stroked-button (click)="assignAgent()">Assign</button>
+                  </div>
+                </div>
+
+                <div class="action-block">
+                  <span class="action-label">Priority</span>
+                  <div class="action-row">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-select
+                        [value]="selectedPriority()"
+                        (selectionChange)="selectedPriority.set($event.value)"
+                      >
+                        <mat-option value="Low">Low</mat-option>
+                        <mat-option value="Medium">Medium</mat-option>
+                        <mat-option value="High">High</mat-option>
+                        <mat-option value="Critical">Critical</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-stroked-button (click)="savePriority()">Save</button>
+                  </div>
+                </div>
+              }
+
+              @if (isAdmin || isAgent) {
+                <div class="action-block">
+                  <span class="action-label">Status</span>
+                  <div class="action-row action-row-wrap">
+                    @if (canTransitionTo('InProgress')) {
+                      <button mat-stroked-button (click)="changeStatus('InProgress')">
+                        {{ t.status === 'Resolved' ? 'Reopen (In Progress)' : 'Start Progress' }}
+                      </button>
+                    }
+                    @if (canTransitionTo('Resolved')) {
+                      <button mat-stroked-button (click)="changeStatus('Resolved')">Mark Resolved</button>
+                    }
+                    @if (canTransitionTo('Open')) {
+                      <button mat-stroked-button (click)="changeStatus('Open')">Reopen</button>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if (isAgent) {
+                <div class="action-block">
+                  <span class="action-label">Log Time</span>
+                  <form [formGroup]="timeEntryForm" (ngSubmit)="logTime()" class="time-entry-form">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Work Date</mat-label>
+                      <input matInput type="date" formControlName="workDate" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Duration (minutes)</mat-label>
+                      <input matInput type="number" min="1" formControlName="durationMinutes" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Description</mat-label>
+                      <input matInput formControlName="description" />
+                    </mat-form-field>
+                    <button mat-stroked-button type="submit" class="full-width">Log Time</button>
+                  </form>
+                </div>
+              }
+
+              @if (isCustomer && t.status === 'Resolved') {
+                <div class="action-block">
+                  <span class="action-label">Resolved</span>
+                  <p class="action-hint">Happy with the resolution? You can close this ticket.</p>
+                  <button mat-flat-button color="primary" class="full-width" (click)="closeTicket()">
+                    Close Ticket
+                  </button>
+                </div>
+              }
+            </div>
+          </mat-card>
+        }
+      </div>
+    </div>
+  </div>
+  }
+}

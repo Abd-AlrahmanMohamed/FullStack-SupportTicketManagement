@@ -1,0 +1,61 @@
+<div class="page">
+  <app-page-header title="Users" description="Manage admin, support agent, and customer accounts.">
+    <button mat-flat-button color="primary" (click)="openCreateUserDialog()">
+      <mat-icon>person_add</mat-icon>
+      New User
+    </button>
+  </app-page-header>
+
+  <div class="surface-card filter-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [formControl]="search" placeholder="Search by name or email" />
+    </mat-form-field>
+  </div>
+
+  <div class="surface-card table-container">
+    @if (loading()) {
+      <app-loading-state [overlay]="true" />
+    }
+
+    <table mat-table [dataSource]="filteredUsers()">
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let user" class="user-name">{{ user.fullName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user" class="text-secondary">{{ user.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Role</th>
+        <td mat-cell *matCellDef="let user">
+          <span class="badge" [ngClass]="roleTone(user.role)">{{ roleLabel(user.role) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let user">
+          <span class="badge" [ngClass]="user.isActive ? 'tone-success' : 'tone-neutral'">
+            {{ user.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Created</th>
+        <td mat-cell *matCellDef="let user" class="text-muted">{{ user.createdAt | date: 'MMM d, y' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    @if (!loading() && filteredUsers().length === 0) {
+      <app-empty-state icon="group" title="No users found" message="Try a different search term." />
+    }
+  </div>
+</div>

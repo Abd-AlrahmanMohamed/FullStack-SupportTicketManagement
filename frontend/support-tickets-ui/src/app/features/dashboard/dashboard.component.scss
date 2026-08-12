@@ -1,0 +1,136 @@
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--space-4);
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) !important;
+}
+
+.kpi-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+
+.kpi-icon-danger {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+.kpi-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.kpi-label {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.chart-card,
+.workload-card {
+  padding: var(--space-5) !important;
+}
+
+.card-header {
+  margin-bottom: var(--space-4);
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.card-subtitle {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.chart-content {
+  position: relative;
+  height: 260px;
+}
+
+.workload-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.workload-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.workload-info {
+  flex: 1 1 auto;
+}
+
+.workload-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.workload-name {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.workload-count {
+  color: var(--text-muted);
+}
+
+.workload-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.workload-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+}
+
+.empty-inline {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,38 @@
+// ---------------------------------------------------------------------------
+// Custom Angular Material theme.
+//
+// Replaces the stock "indigo-pink" prebuilt theme (the classic default-
+// Material-demo look) with a single, muted indigo used consistently for
+// every Material component. The exact hex values are mirrored into
+// _tokens.scss (--primary etc.) so hand-built UI (badges, sidebar, links)
+// and Material components (buttons, spinners, form fields) stay in sync.
+// ---------------------------------------------------------------------------
+
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$app-font-family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+
+$app-primary: mat.define-palette(mat.$indigo-palette, 600, 400, 800);
+$app-accent: mat.define-palette(mat.$indigo-palette, 600, 400, 800);
+$app-warn: mat.define-palette(mat.$red-palette, 600);
+
+$app-typography: mat.define-typography-config(
+  $font-family: $app-font-family,
+  $body-1: mat.define-typography-level(14px, 20px, 400),
+  $body-2: mat.define-typography-level(14px, 20px, 400),
+  $button: mat.define-typography-level(14px, 14px, 500),
+);
+
+$app-theme: mat.define-light-theme((
+  color: (
+    primary: $app-primary,
+    accent: $app-accent,
+    warn: $app-warn,
+  ),
+  typography: $app-typography,
+  density: 0,
+));
+
+@include mat.all-component-themes($app-theme);

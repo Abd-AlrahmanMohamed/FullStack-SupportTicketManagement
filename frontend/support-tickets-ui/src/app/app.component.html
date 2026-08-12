@@ -1,0 +1,71 @@
+@if (authService.currentUser(); as user) {
+  <mat-sidenav-container class="shell">
+    <mat-sidenav
+      #drawer
+      class="sidebar"
+      [mode]="isHandset() ? 'over' : 'side'"
+      [opened]="!isHandset()"
+      [fixedInViewport]="isHandset()"
+    >
+      <div class="brand">
+        <div class="brand-mark">
+          <mat-icon>confirmation_number</mat-icon>
+        </div>
+        <span class="brand-name">Support Desk</span>
+      </div>
+
+      <mat-nav-list class="nav-list">
+        @for (item of navItems; track item.path) {
+          <a
+            mat-list-item
+            [routerLink]="item.path"
+            routerLinkActive="nav-item-active"
+            [routerLinkActiveOptions]="{ exact: item.path === '/tickets/create' }"
+            (click)="isHandset() && drawer.close()"
+          >
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <span matListItemTitle>{{ item.label }}</span>
+          </a>
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <header class="topbar">
+        <button
+          mat-icon-button
+          class="menu-toggle"
+          type="button"
+          (click)="drawer.toggle()"
+          aria-label="Toggle navigation menu"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+
+        <span class="topbar-spacer"></span>
+
+        <button mat-button class="user-menu-trigger" [matMenuTriggerFor]="userMenu" type="button">
+          <app-avatar [name]="user.fullName" size="sm" />
+          <span class="user-menu-text">
+            <span class="user-name">{{ user.fullName }}</span>
+            <span class="user-role">{{ roleLabel(user.role) }}</span>
+          </span>
+          <mat-icon class="chevron">expand_more</mat-icon>
+        </button>
+
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </header>
+
+      <main class="content">
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <router-outlet></router-outlet>
+}

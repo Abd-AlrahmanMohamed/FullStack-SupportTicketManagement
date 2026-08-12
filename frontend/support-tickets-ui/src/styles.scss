@@ -1,0 +1,107 @@
+@use 'styles/theme' as *;
+@use 'styles/tokens' as *;
+
+// ---------------------------------------------------------------------------
+// Base element styles
+// ---------------------------------------------------------------------------
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--app-background);
+  color: var(--text-primary);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--primary);
+}
+
+// ---------------------------------------------------------------------------
+// Small set of shared layout primitives reused across every feature page.
+// Deliberately kept minimal - see shared/components for anything more than
+// a couple of CSS declarations (badges, empty states, etc.).
+// ---------------------------------------------------------------------------
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.surface-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+// ---------------------------------------------------------------------------
+// Angular Material overrides - small, targeted tweaks so components read as
+// "this product" rather than "Material demo defaults".
+// ---------------------------------------------------------------------------
+
+.mat-mdc-card {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--border);
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__leading,
+.mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__notch,
+.mdc-text-field--outlined .mdc-notched-outline .mdc-notched-outline__trailing {
+  border-radius: var(--radius-sm);
+}
+
+.mat-mdc-table {
+  background: transparent;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  background-color: var(--surface-hover);
+}
+
+.mat-mdc-snack-bar-container.app-snackbar-error .mdc-snackbar__surface {
+  background-color: var(--danger-text) !important;
+}
+
+.mat-mdc-form-field .mdc-notched-outline__notch {
+ border-radius: 0 !important;
+}
+.mat-mdc-form-field-required-marker {
+  display: none !important;
+}

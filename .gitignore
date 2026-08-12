@@ -1,0 +1,22 @@
+## .NET
+bin/
+obj/
+*.user
+.vs/
+*.suo
+
+## Angular / Node
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/.angular/
+npm-debug.log*
+
+## Secrets / local config
+**/appsettings.Development.local.json
+*.env
+.env
+*.pfx
+
+## OS
+.DS_Store
+Thumbs.db

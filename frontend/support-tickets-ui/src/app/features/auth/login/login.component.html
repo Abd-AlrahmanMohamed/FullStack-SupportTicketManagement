@@ -1,0 +1,123 @@
+<div class="login-page">
+  <div class="brand-panel">
+    <div class="brand-panel-inner">
+      <div class="brand-mark">
+        <mat-icon>confirmation_number</mat-icon>
+      </div>
+      <h1 class="brand-title">Support Desk</h1>
+      <p class="brand-subtitle">
+        One place for your team to track, prioritize, and resolve customer support requests.
+      </p>
+
+      <ul class="feature-list">
+        <li>
+          <mat-icon>bolt</mat-icon>
+          <span>Real-time ticket status and priority tracking</span>
+        </li>
+        <li>
+          <mat-icon>groups</mat-icon>
+          <span>Assign work across your support team</span>
+        </li>
+        <li>
+          <mat-icon>insights</mat-icon>
+          <span>Dashboard insights into team performance</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <mat-card class="login-card">
+      <div class="login-card-header">
+        <div class="brand-mark brand-mark-mobile">
+          <mat-icon>confirmation_number</mat-icon>
+        </div>
+        <h2 class="login-title">Welcome back</h2>
+        <p class="login-subtitle">Sign in to access your support dashboard.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            placeholder="you@company.com"
+          />
+          <mat-icon matPrefix>mail_outline</mat-icon>
+          @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+            <mat-error>Email is required.</mat-error>
+          }
+          @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+            <mat-error>Enter a valid email address.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+          />
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="showPassword.set(!showPassword())"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+          >
+            <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+            <mat-error>Password is required.</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <div class="form-error" role="alert">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="full-width submit-button"
+          [disabled]="loading()"
+        >
+          @if (loading()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            Sign In
+          }
+        </button>
+      </form>
+
+      @if (showDemoCredentials) {
+        <div class="demo-panel">
+          <p class="demo-heading">Demo accounts (development only)</p>
+          <div class="demo-accounts">
+            @for (account of demoAccounts; track account.email) {
+              <button
+                type="button"
+                class="demo-account"
+                (click)="fillDemoAccount(account.email, account.password)"
+              >
+                <span class="demo-role">{{ account.role }}</span>
+                <span class="demo-email">{{ account.email }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="page create-page">
+  <app-page-header
+    title="Create Ticket"
+    description="Tell us what's going on and we'll get back to you."
+  />
+
+  <mat-card class="create-card">
+    <form [formGroup]="form" (ngSubmit)="submit()" class="create-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" maxlength="200" placeholder="Short summary of the issue" />
+        @if (form.controls.title.touched && form.controls.title.hasError('required')) {
+          <mat-error>Title is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          rows="6"
+          [maxlength]="descriptionMaxLength"
+          placeholder="Include any details that will help us resolve this quickly."
+        ></textarea>
+        <mat-hint align="end">
+          {{ form.controls.description.value?.length ?? 0 }}/{{ descriptionMaxLength }}
+        </mat-hint>
+        @if (form.controls.description.touched && form.controls.description.hasError('required')) {
+          <mat-error>Description is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option value="Low">Low</mat-option>
+          <mat-option value="Medium">Medium</mat-option>
+          <mat-option value="High">High</mat-option>
+          <mat-option value="Critical">Critical</mat-option>
+        </mat-select>
+        <mat-hint>How urgent is this for you?</mat-hint>
+      </mat-form-field>
+
+      @if (errorMessage()) {
+        <div class="form-error" role="alert">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <div class="form-actions">
+        <button mat-button type="button" (click)="cancel()" [disabled]="submitting()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
+          @if (submitting()) {
+            <mat-spinner diameter="18"></mat-spinner>
+          } @else {
+            Create Ticket
+          }
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

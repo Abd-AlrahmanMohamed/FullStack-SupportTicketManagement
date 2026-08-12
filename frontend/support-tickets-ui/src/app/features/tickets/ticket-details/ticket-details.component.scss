@@ -1,0 +1,343 @@
+.details-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-link {
+  align-self: flex-start;
+  color: var(--text-secondary);
+}
+
+// -----------------------------------------------------------------------
+// Header
+// -----------------------------------------------------------------------
+
+.ticket-header {
+  padding-bottom: var(--space-2);
+}
+
+.ticket-header-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.ticket-number {
+  font-family: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  background: var(--surface-sunken);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.ticket-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.ticket-description {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-width: 720px;
+}
+
+// -----------------------------------------------------------------------
+// Workspace layout
+// -----------------------------------------------------------------------
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.main-column,
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.side-column {
+  position: sticky;
+  top: calc(56px + var(--space-4));
+}
+
+.section-card {
+  padding: var(--space-5) !important;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+
+  h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}
+
+.section-count {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+  padding: 1px 8px;
+  border-radius: 999px;
+}
+
+// -----------------------------------------------------------------------
+// Comments
+// -----------------------------------------------------------------------
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-height: 420px;
+  overflow-y: auto;
+  margin-bottom: var(--space-2);
+}
+
+.comment {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.comment-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.comment-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.comment-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.comment-role-tag {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  background: var(--surface-sunken);
+  padding: 0 6px;
+  border-radius: 4px;
+}
+
+.comment-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.comment-message {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+}
+
+.comment-divider {
+  margin-bottom: var(--space-4);
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.comment-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.full-width {
+  width: 100%;
+}
+
+// -----------------------------------------------------------------------
+// Timeline
+// -----------------------------------------------------------------------
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+
+  mat-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--surface-sunken);
+    color: var(--text-secondary);
+  }
+}
+
+.timeline-line {
+  flex: 1 1 auto;
+  width: 1px;
+  min-height: 20px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.timeline-content {
+  padding-bottom: var(--space-4);
+}
+
+.timeline-label {
+  margin: 4px 0 2px;
+  font-size: 13.5px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.timeline-change {
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.timeline-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+// -----------------------------------------------------------------------
+// Details / actions sidebar
+// -----------------------------------------------------------------------
+
+.detail-list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+
+  dt {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--text-primary);
+    font-weight: 500;
+    text-align: right;
+  }
+}
+
+.actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.action-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.action-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.action-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+
+  mat-form-field {
+    flex: 1 1 0%;
+    min-width: 0;
+    margin-bottom: -1.25em;
+  }
+
+  button {
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+}
+
+.action-row-wrap {
+  flex-wrap: wrap;
+}
+
+.action-hint {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+.time-entry-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.time-entries-table {
+  width: 100%;
+}
+
+// -----------------------------------------------------------------------
+// Responsive
+// -----------------------------------------------------------------------
+
+@media (max-width: 960px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .side-column {
+    position: static;
+  }
+}
